@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app>
+	<servlet>
+		<servlet-name>hello</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>hello</servlet-name>  <!-- url *.do가 실행되면 -->
+		<url-pattern>*.do</url-pattern>  	<!-- hello_servlet.xml이 resolve에 들어감 -->
+	</servlet-mapping>
+	
+	<!-- board -->
+	<servlet>
+		<servlet-name>board</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>board</servlet-name>  <!-- url *.do가 실행되면 -->
+		<url-pattern>*.board</url-pattern>  	<!-- board_servlet.xml이 resolve에 들어감 -->
+	</servlet-mapping>	
+</web-app>

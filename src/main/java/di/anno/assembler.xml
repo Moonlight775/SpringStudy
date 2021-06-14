@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 자바 클래스 -->
+<beans
+	xmlns = "http://www.springframework.org/schema/beans"
+	xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<context:annotation-config/>
+
+	<!-- <bean id='assem' class='di.step5.Assembler' /> -->
+			      <!-- ↑ object명 -->
+	<!-- <bean id='oracle' class='di.step5.Oracle' /> -->
+	<bean id='my' class='di.anno.Mysql' />
+	<bean id='or' class='di.anno.Oracle' autowire="byName"/>  <!-- AutowireByName에서 Oracle or;과 이름이 같아야한다. -->
+	<bean id='ti' class='di.anno.Tizen'  autowire="byType"/>
+	
+	<bean id='byName' class='di.anno.AutowireByName' autowire="byName" />
+	<bean id='byType' class='di.anno.AutowireByType' autowire="byType" />
+	<bean id='byAnno' class='di.anno.AutowireByAnno' />
+	
+</beans>
