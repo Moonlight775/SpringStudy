@@ -13,7 +13,7 @@
 		<url-pattern>*.do</url-pattern>  	<!-- hello_servlet.xml이 resolve에 들어감 -->
 	</servlet-mapping>
 	
-	<!-- board -->
+	<!-- board --> <!-- <servlet>과 <servlet-mapping>은 한 쌍 -->
 	<servlet>
 		<servlet-name>board</servlet-name>
 		<servlet-class>

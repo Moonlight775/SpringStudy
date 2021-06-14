@@ -1,5 +1,7 @@
 package mvc;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,18 @@ public class BoardController { //서블렛과 다르게 상속받지 않아도 �
 		return mv;
 	}
 	
-	
+	@RequestMapping(value="/board/search.board", method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView select(String findStr) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("BoardContrloller.search..........");
+		
+		List<BoardVo> list = dao.search(findStr);
+		
+		mv.addObject("list", list);
+		mv.setViewName("search");
+		
+		return mv;
+	}
 }
 //   

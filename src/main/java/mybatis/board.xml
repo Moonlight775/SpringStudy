@@ -12,6 +12,11 @@
 	  		or    doc       like '%${_parameter}%'
 	  </select>
 	  
+	  <select id="search" parameterType="String" resultType="mvc.BoardVo">
+	  		Select * from board
+	  		where subject like '%${_parameter}%'
+	  		or		doc	  like '%${_parameter}%'
+	  </select>
 	  
 </mapper>   
 

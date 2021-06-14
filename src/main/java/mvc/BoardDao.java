@@ -1,6 +1,8 @@
 package mvc;
 
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import mybatis.MybaFactory;
@@ -24,4 +26,12 @@ public class BoardDao {
 		return msg;
 		
 	}
+	
+	public List<BoardVo> search(String findStr) {
+		List<BoardVo> list = null;
+		list = session.selectList("board.search", findStr);
+		return list;
+		
+	}
+	
 }
