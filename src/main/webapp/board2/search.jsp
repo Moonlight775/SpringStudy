@@ -6,18 +6,22 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src='./js/board.js'></script>
 </head>
 <body>
-<div id='index'>
-	<h2>Spring MVC</h2>
-	<a href='board/search.board'>조회(연습)</a>
-	<input type='button' value='게시판' onclick='brd.home()' />
+<div id='board'>
+	<h2>Spring MVC(게시판 조회)</h2>
+	<form name='frm_board' method='Post' action='search.board'>
+		<label>검색어</label>
+		<input type='text' name='' />
+		<input type='button' value='조회' /><br/>
+		
+		
+		
 	
-	<hr/>
-	<div id='border'></div>
 	
+	
+	</form>
+
 </div>
 </body>
 </html>

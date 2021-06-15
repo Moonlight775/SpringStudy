@@ -10,10 +10,10 @@
 	
 	<servlet-mapping>
 		<servlet-name>hello</servlet-name>  <!-- url *.do가 실행되면 -->
-		<url-pattern>*.do</url-pattern>  	<!-- hello_servlet.xml이 resolve에 들어감 -->
+		<url-pattern>*.do</url-pattern>  	<!-- hello-servlet.xml이 resolve에 들어감 -->
 	</servlet-mapping>
 	
-	<!-- board --> <!-- <servlet>과 <servlet-mapping>은 한 쌍 -->
+	<!-- board sample test --> <!-- <servlet>과 <servlet-mapping>은 한 쌍 -->
 	<servlet>
 		<servlet-name>board</servlet-name>
 		<servlet-class>
@@ -22,7 +22,21 @@
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>board</servlet-name>  <!-- url *.do가 실행되면 -->
-		<url-pattern>*.board</url-pattern>  	<!-- board_servlet.xml이 resolve에 들어감 -->
+		<servlet-name>board</servlet-name>  	<!-- url *.board가 실행되면 -->
+		<url-pattern>*.board</url-pattern>  	<!-- board-servlet.xml이 resolve에 들어감 -->
 	</servlet-mapping>	
+	
+		<!-- board -->
+	<servlet>
+		<servlet-name>brd</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>brd</servlet-name>  	
+		<url-pattern>*.brd</url-pattern>  	
+	</servlet-mapping>
+	
 </web-app>
