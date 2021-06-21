@@ -128,8 +128,10 @@ public class BoardDao {
 		String msg = "OK";
 		int r = 0;
 		int chkCnt = 0;
+		
 		try {
 			int serial = sqlSession.selectOne("board.brd_getSerial");
+			vo.setpSerial(vo.getSerial());
 			vo.setSerial(serial);
 			r = sqlSession.insert("board.brd_repl", vo);
 			if(r>0) {
@@ -192,7 +194,7 @@ public class BoardDao {
 			int r = sqlSession.delete("board.brd_delete", vo);
 			if(r>0) {
 				r = sqlSession.delete("board.brdAtt_delete", vo.getSerial());
-				if(vo.getAttList()== null || r == vo.getAttList().size()) {
+				if(vo.getAttList().size()==0 || r == vo.getAttList().size()) {
 					sqlSession.commit();
 					for(BoardAttVo v : delList) {
 						File f = new File(BoardFileUploadController.saveDir + v.getSysAtt());

@@ -1,42 +1,91 @@
 package board;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class BoardController { //서블렛과 다르게 상속받지 않아도 된다. (simple해짐)
-	
+public class BoardController {
+	//기존 servlet 사용과의 차이점을 확인하기
 	@Autowired
 	BoardDao dao;
 	
-	@RequestMapping(value="/search.brd", method={RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView search(Page page) {
+	@Autowired
+	BoardFileUploadController fileUpload;
+	
+	List<BoardAttVo> attList;
+	
+	@RequestMapping(value="/search.brd", method= {RequestMethod.GET, RequestMethod.POST}) //get 또는 post 쓸 때
+	public ModelAndView search(Page page) { //hello 매개변수로 HttpServletRequest, HttpServletResponse 를 쓸 수 있다. 필요에 따라 쓴다.
 		ModelAndView mv = new ModelAndView();
 		
-		System.out.println("BoardContrloller.search..........");
-		
+		System.out.println("BoardController.search............");
+
 		List<BoardVo> list = dao.select(page);
 		
+		//Model : model.addAttribute("msg", "Hi...spring !!")
 		mv.addObject("list", list);
 		mv.addObject("page", page);
 		mv.setViewName("search");
-		
 		return mv;
 	}
 	
-	@RequestMapping(value="/board/view.brd", method= {RequestMethod.POST})
+	@RequestMapping(value="/register.brd", method= {RequestMethod.GET, RequestMethod.POST}) //get 또는 post 쓸 때
+	public ModelAndView register(Page page) {
+		ModelAndView mv = new ModelAndView();
+
+		mv.addObject("page", page);
+		mv.setViewName("register");
+		return mv;
+	}
+	
+	@RequestMapping(value="/fup.brd", method= RequestMethod.POST)
+	public void  upload(HttpServletRequest req, HttpServletResponse resp){
+		attList = fileUpload.upload(req);
+		System.out.println(attList.size());
+		PrintWriter pw;
+		try {
+			pw = resp.getWriter();
+			pw.print("ok...");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value="/registerR.brd", method= {RequestMethod.GET, RequestMethod.POST}) //get 또는 post 쓸 때
+	public ModelAndView registerR(BoardVo vo, Page page) {
+		ModelAndView mv = new ModelAndView();
+	
+			System.out.println("Controller.registerR");
+			
+			vo.setAttList(attList);
+			dao.insert(vo);
+			
+			mv = search(page);
+
+		return mv;
+	}
+	
+	@RequestMapping(value="/view.brd", method= {RequestMethod.POST})
 	public ModelAndView view(BoardVo v, Page p) {
 		ModelAndView mv = new ModelAndView();
 		BoardVo vo = dao.view(v.getSerial());
 		
 		mv.addObject("vo", vo);
 		mv.addObject("page", p);
-		mv.setViewName("view");
+		mv.setViewName("view");	
 		
 		return mv;
 	}
@@ -49,21 +98,87 @@ public class BoardController { //서블렛과 다르게 상속받지 않아도 �
 		mv.addObject("vo", vo);
 		mv.addObject("page", p);
 		mv.setViewName("modify");
+			return mv;
+	}
+	
+	@RequestMapping(value="/modifyR.brd", method= {RequestMethod.POST})
+	public ModelAndView modifyR(BoardVo v, Page p, @RequestParam(value="delFile", required=false) List<String> delFile ) {
+		ModelAndView mv = new ModelAndView();
+		List<BoardAttVo> delList = new ArrayList<BoardAttVo>();
+		
+		if(delFile != null) {
+			for(String ori : delFile) {
+				BoardAttVo attVo = new BoardAttVo();
+				attVo.setSysAtt(ori);
+				delList.add(attVo);
+				v.setDelList(delList);
+			}
+		}
+		
+		v.setAttList(attList);
+		
+		System.out.println("modifyR..............");
+		System.out.println(delList.size());
+		
+		dao.update(v);
+		
+		mv = search(p);
+		mv.setViewName("search");
 		
 		return mv;
 	}
 	
-	@RequestMapping(value="/delete.brd", method= {RequestMethod.POST})
+	@RequestMapping(value="/delete.brd", method= {RequestMethod.GET})
 	public ModelAndView delete(BoardVo v, Page p) {
 		ModelAndView mv = new ModelAndView();
 		
 		dao.delete(v);
 		List<BoardVo> list = dao.select(p);
-		mv.addObject("vo", list);
+		
+		mv.addObject("list", list);
 		mv.addObject("page", p);
 		mv.setViewName("search");
-		
 		return mv;
 	}
+	
+	@RequestMapping(value="/repl.brd", method= {RequestMethod.GET, RequestMethod.POST}) //get 또는 post 쓸 때
+	public ModelAndView repl(Page page) {
+		ModelAndView mv = new ModelAndView();
+
+		mv.addObject("page", page);
+		mv.setViewName("repl");
+		return mv;
+	}
+	
+	@RequestMapping(value="/replR.brd", method= {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView replR(BoardVo vo, Page page) {
+		ModelAndView mv = new ModelAndView();
+	
+			System.out.println("Controller.replR");
+			
+			vo.setAttList(attList);
+			dao.repl(vo);
+			
+			mv = search(page);
+			mv.setViewName("search");
+
+		return mv;
+	}
+	
 }
-//   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

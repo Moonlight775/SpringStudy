@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>게시판 답글</title>
-<link rel='stylesheet' type='text/css' href='../css/board.css'>
+<link rel='stylesheet' type='text/css' href='./css/board.css'>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src='./js/board.js'></script>
 

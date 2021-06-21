@@ -3,20 +3,21 @@
  */
 var brd = {};
 
+// 게시판 메뉴를 클릭한 경우
+brd.home = function(){
+	$('#border').load('search.brd');
+}
+
 brd.init = function(){
 	$('#board #btnFind').on('click', function(){
 		var frm = $('#frm_board')[0];
 		frm.nowPage.value = 1;
-		var param = $(frm).serialize();
+		var param = $(frm).serialize(); // key=value & key=value ...
 		$('#border').load('search.brd', param);
 	})
 	
 	$('#board #btnSearch').on('click', function(){
 		var frm = $('#frm_board')[0];
-		
-		//내용입력폼과 파일 업로드폼이 분리되지 않아서...
-		if(frm.serial.value=='') frm.serial.value = 0;
-		if(frm.nowPage.vlaue=='') frm.nowPage.value = '1';
 		
 		var param = $(frm).serialize();
 		$('#border').load('search.brd', param);
@@ -25,23 +26,30 @@ brd.init = function(){
 	$('#board #btnInsert').on('click', function(){
 		var frm = $('#frm_board')[0];
 		var param = $(frm).serialize();
-		$('#border').load('register.brd', param);
+		$('#border').load('register.brd', param); //<-Get type임, $.post("register.brd", param, function(data){}...
 	})
 	
 	$('#board #btnInsertR').on('click', function(){
 		var frm = $('#frm_upload')[0];
-		
 		var data = new FormData(frm);
+		
+		var frm2 = $('#frm_board')[0];
+		var param = $(frm2).serialize();		
 		
 		$.ajax({
 			type 		: 'POST',
-			url  		: 'insert.fup',
+			url  		: 'fup.brd',
 			enctype  : 'multipart/form-data',
 			data 		: data,
 			contentType : false,
 			processData : false,
 			success : function(resp){
-				$('#border').load('insertR.brd');
+				$.post("registerR.brd", param, function(data){
+					$('#border').html(data);
+				})
+			},
+			error : function(xhr, resp, status){
+				alert(resp+ "," + status);
 			}
 		});
 	});
@@ -49,7 +57,10 @@ brd.init = function(){
 	$('#board #btnModify').on('click', function(){ 
 		var frm = $('#frm_board')[0];
 		var param = $(frm).serialize();
-		$('#border').load('modify.brd', param);
+		
+		$.post('modify.brd', param, function(data){
+			$('#border').html(data);
+		})
 	})
 	
 	$('#board #btnUpdate').on('click', function(){
@@ -59,22 +70,28 @@ brd.init = function(){
 	})
 	
 	$('#board #btnUpdateR').on('click', function(){
-		var frm = $('#frm_board')[0];
-		var pwd = $('#brdPasswordZone #pwd').val();
-		frm.pwd.value = pwd;
-	
+		var frm = $('#frm_upload')[0];
 		var data = new FormData(frm);
+
+		var pwd = $('#brdPasswordZone #pwd').val();
+		var frm2 = $('#frm_board')[0];
+		frm2.pwd.value = pwd;
+	
 		
 		$.ajax({
 			type    : 'POST',
-			url     : 'update.fup',
+			url     : 'fup.brd',
 			enctype : 'multipart/form-data',
 			data    : data,
 			contentType : false,
 			processData : false,
 			success : function(resp){
 				$('#brdPasswordZone').css({'display' : 'none'});
-				$('#border').load('modifyR.brd');  
+				
+				var param = $(frm2).serialize();
+				$.post('modifyR.brd', param, function(data){
+					$('#border').html(data);  
+				})
 			}
 		});
 	});
@@ -87,29 +104,34 @@ brd.init = function(){
 	})
 	
 	$('#board #btnReplR').on('click', function(){
-		var frm = $('#frm_board')[0];
-		
+		var frm = $('#frm_upload')[0];
 		var data = new FormData(frm);
 		
 		$.ajax({
 			type    : 'POST',
-			url     : 'repl.fup',
+			url     : 'fup.brd',
 			enctype : 'multipart/form-data',
 			data    : data,
 			contentType : false,
 			processData : false,
 			success : function(resp){
-				$('#border').load('replR.brd');
+				var frm2 = $('frm_board')[0];
+				var param = $(frm2).serialize();
+				
+				$.post('replR.brd', param, function(data){
+					$('#border').html(data);
+				})
+				
 			}
 		});
 		
 	});
 	
 	
-	$('#board #btnDelete').on('click', function(){
-		var frm = $('#frm_board')[0];
-		var param = $(frm).serialize();
-		$('#border').load('delete.brd', param);
+	$('#btnDelete').on('click', function(){
+		$('#brdPasswordZone').css({
+			'display' : 'block'
+		})
 	})
 	
 	$('#btnCancel').on('click', function(){
@@ -133,17 +155,14 @@ brd.init = function(){
 	
 }
 
-// 게시판 메뉴를 클릭한 경우
-brd.home = function(){
-	$('#border').load('search.brd');
-}
-
 
 brd.view = function(serial){
-	var frm = $('frm_board')[0];
+	var frm = $('#frm_board')[0];
 	frm.serial.value = serial;
 	var param = $(frm).serialize();
-	$('#border').load('view.brd', param);
+	$.post('view.brd', param, function(data){
+		$('#border').html(data);
+	})
 }
 
 brd.move = function(nowPage){

@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>게시판 수정</title>
-<link rel='stylesheet' type='text/css' href='../css/board.css'>
+<link rel='stylesheet' type='text/css' href='./css/board.css'>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src='../js/board.js'></script>
+<script src='./js/board.js'></script>
 </head>
 <body>
 <div id='board'>
@@ -37,7 +37,9 @@
 		</div>
 		
 		<input type='hidden' name='pwd'/>
-		
+		<input type='text' name='nowPage' value='${param.nowPage }'/>
+		<input type='text' name='findStr' value='${param.findStr }'/>	
+		<input type='text' name='serial'  value='${param.serial }'/>
 	</form>
 	
 	<form name='frm_upload' id='frm_upload' method='post'>
@@ -50,11 +52,9 @@
 	</form>
 	
 	<div id='btn_zone'>
-			<input type='button' value='수정' id='btnModifyR'/>
+			<input type='button' value='수정' id='btnUpdate'/>
 			<input type='reset' value='취소' id='btnSearch'/>
-			<input type='text' name='nowPage' value='${param.nowPage }'/>
-			<input type='text' name='findStr' value='${param.findStr }'/>	
-			<input type='text' name='serial'  value='${param.serial }'/>
+			
 		</div>	
 	
 		<div id='brdPasswordZone'>
